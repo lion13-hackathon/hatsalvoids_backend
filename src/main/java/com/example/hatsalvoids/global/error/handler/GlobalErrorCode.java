@@ -1,6 +1,6 @@
 package com.example.hatsalvoids.global.error.handler;
 
-import com.samsamhajo.deepground.global.error.core.ErrorCode;
+import com.example.hatsalvoids.global.error.core.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

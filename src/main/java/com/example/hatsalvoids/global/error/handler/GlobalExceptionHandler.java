@@ -1,9 +1,9 @@
 package com.example.hatsalvoids.global.error.handler;
 
-import com.samsamhajo.deepground.global.error.core.BaseException;
-import com.samsamhajo.deepground.global.error.core.ErrorCode;
-import com.samsamhajo.deepground.global.error.core.ErrorResponse;
-import com.samsamhajo.deepground.global.utils.GlobalLogger;
+import com.example.hatsalvoids.global.error.core.BaseException;
+import com.example.hatsalvoids.global.error.core.ErrorCode;
+import com.example.hatsalvoids.global.error.core.ErrorResponse;
+import com.example.hatsalvoids.global.utils.GlobalLogger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
