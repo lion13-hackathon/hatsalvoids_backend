@@ -6,7 +6,8 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ExternalApiErrorCode implements ErrorCode {
-    REQUEST_FAIL(HttpStatus.BAD_GATEWAY, "API 요청에 실패했습니다.");
+    REQUEST_FAIL(HttpStatus.BAD_GATEWAY, "API 요청에 실패했습니다."),
+    RESPONSE_ERROR(HttpStatus.BAD_GATEWAY, "외부 API 오류: code=%s, message=%s");
 
     private final HttpStatus status;
     private final String message;

@@ -3,10 +3,14 @@ package com.example.hatsalvoids.external;
 import com.example.hatsalvoids.external.exception.ExternalApiErrorCode;
 import com.example.hatsalvoids.external.exception.ExternalApiException;
 import com.example.hatsalvoids.global.utils.GlobalLogger;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.UnsupportedEncodingException;
@@ -18,16 +22,21 @@ import java.util.function.Supplier;
 @Component
 public class ExternalApiCaller {
     private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
 
     public ExternalApiCaller() {
         this.restTemplate = new RestTemplate();
+        this.objectMapper = new ObjectMapper();
     }
 
-    public <T> T execute(Supplier<T> supplier) {
+    private <T> T execute(Supplier<T> supplier) {
         try {
             return supplier.get();
         } catch (Exception e) {
-            GlobalLogger.error(ExternalApiErrorCode.REQUEST_FAIL,":",e.getMessage());
+            if (e instanceof ExternalApiException) {
+                throw (ExternalApiException) e;
+            }
+            GlobalLogger.error(ExternalApiErrorCode.REQUEST_FAIL, ":", e.getMessage());
             throw new ExternalApiException(ExternalApiErrorCode.REQUEST_FAIL, e);
         }
     }
@@ -61,16 +70,52 @@ public class ExternalApiCaller {
             GlobalLogger.info("Headers: " + headers);
             GlobalLogger.info("Query Params: " + queryParams);  // raw 로그
 
-            ResponseEntity<R> response = restTemplate.exchange(
-                    finalUri,
-                    HttpMethod.GET,
-                    entity,
-                    responseType
-            );
+            String body;
+            try {
+                ResponseEntity<String> response = restTemplate.exchange(
+                        finalUri,
+                        HttpMethod.GET,
+                        entity,
+                        new ParameterizedTypeReference<String>() {}
+                );
+                body = response.getBody();
+            } catch (HttpStatusCodeException httpEx) {
+                body = httpEx.getResponseBodyAsString();
+            }
+            GlobalLogger.info("Response: " + body);
 
-            GlobalLogger.info("Response: " + response.getBody());
+            if (body == null || body.isEmpty()) {
+                return null;
+            }
 
-            return response.getBody();
+            try {
+                JsonNode root = objectMapper.readTree(body);
+                // VWorld Data API는 { "response": { ... } } 래핑을 사용
+                if (root.has("response") && root.get("response").isObject()) {
+                    JsonNode resp = root.get("response");
+                    String status = resp.path("status").asText("");
+                    if ("ERROR".equalsIgnoreCase(status)) {
+                        String code = resp.path("error").path("code").asText("");
+                        String text = resp.path("error").path("text").asText("");
+                        GlobalLogger.error(ExternalApiErrorCode.RESPONSE_ERROR, ": code=", code, ", text=", text);
+                        throw new ExternalApiException(ExternalApiErrorCode.RESPONSE_ERROR, code, text);
+                    }
+                    // 정상인 경우 내부 response 노드를 요청 타입으로 매핑
+                    TypeFactory tf = objectMapper.getTypeFactory();
+                    return objectMapper.readValue(
+                            objectMapper.treeAsTokens(resp),
+                            tf.constructType(responseType.getType())
+                    );
+                }
+                // 래핑이 없다면 전체 바디를 요청 타입으로 매핑 (예: GIS WFS 등)
+                TypeFactory tf = objectMapper.getTypeFactory();
+                return objectMapper.readValue(body, tf.constructType(responseType.getType()));
+            } catch (ExternalApiException e) {
+                throw e;
+            } catch (Exception e) {
+                GlobalLogger.error(ExternalApiErrorCode.REQUEST_FAIL, ":", e.getMessage());
+                throw new ExternalApiException(ExternalApiErrorCode.REQUEST_FAIL, e);
+            }
         });
     }
 
@@ -87,14 +132,46 @@ public class ExternalApiCaller {
             }
             httpHeaders.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<T> entity = new HttpEntity<>(body, httpHeaders);
-            ResponseEntity<R> response = restTemplate.exchange(
-                    builder.toUriString(),
-                    HttpMethod.POST,
-                    entity,
-                    responseType
-            );
+            String responseBody;
+            try {
+                ResponseEntity<String> response = restTemplate.exchange(
+                        builder.toUriString(),
+                        HttpMethod.POST,
+                        entity,
+                        new ParameterizedTypeReference<String>() {}
+                );
+                responseBody = response.getBody();
+            } catch (HttpStatusCodeException httpEx) {
+                responseBody = httpEx.getResponseBodyAsString();
+            }
+            GlobalLogger.info("Response: " + responseBody);
 
-            return response.getBody();
+            if (responseBody == null || responseBody.isEmpty()) {
+                return null;
+            }
+            try {
+                JsonNode root = objectMapper.readTree(responseBody);
+                if (root.has("response") && root.get("response").isObject()) {
+                    JsonNode resp = root.get("response");
+                    String status = resp.path("status").asText("");
+                    if ("ERROR".equalsIgnoreCase(status)) {
+                        String code = resp.path("error").path("code").asText("");
+                        String text = resp.path("error").path("text").asText("");
+                        GlobalLogger.error(ExternalApiErrorCode.RESPONSE_ERROR, ": code=", code, ", text=", text);
+                        throw new ExternalApiException(ExternalApiErrorCode.RESPONSE_ERROR, code, text);
+                    }
+                    return objectMapper.readValue(
+                            objectMapper.treeAsTokens(resp),
+                            responseType
+                    );
+                }
+                return objectMapper.readValue(responseBody, responseType);
+            } catch (ExternalApiException e) {
+                throw e;
+            } catch (Exception e) {
+                GlobalLogger.error(ExternalApiErrorCode.REQUEST_FAIL, ":", e.getMessage());
+                throw new ExternalApiException(ExternalApiErrorCode.REQUEST_FAIL, e);
+            }
         });
     }
 } 

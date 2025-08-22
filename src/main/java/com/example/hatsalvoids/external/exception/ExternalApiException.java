@@ -9,4 +9,7 @@ public class ExternalApiException extends BaseException {
     public ExternalApiException(ExternalApiErrorCode errorCode, Throwable cause) {
         super(errorCode, cause);
     }
+    public ExternalApiException(ExternalApiErrorCode errorCode, Object... args) {
+        super(errorCode, args);
+    }
 } 
