@@ -74,7 +74,7 @@ public class ShadeService {
 
                 Double buildingHeightM = gisBuildingWFSApiResponse.getFeatures().get(0).getProperties().getHg();
 
-                // TODO : 각 건물에 대해 아래 연산 수행 (예시)
+                // 각 건물에 대해 그늘 연산 수행
                 List<List<double[]>> rings = extractLinearRings(nestedGeometry);
                 ShadeGeometryResult result = computeShadeGeometryEpsg5186(rings, buildingHeightM, when, zoneId);
 
