@@ -1,7 +1,7 @@
 package com.example.hatsalvoids.shade.model;
 
 
-import com.example.hatsalvoids.external.model.response.RoadAddressBuildingApiResponse;
+import com.example.hatsalvoids.external.vworld.model.response.RoadAddressBuildingApiResponse;
 import lombok.Getter;
 
 @Getter

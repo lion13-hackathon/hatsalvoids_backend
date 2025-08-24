@@ -1,4 +1,4 @@
-package com.example.hatsalvoids.external;
+package com.example.hatsalvoids.external.openai;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;

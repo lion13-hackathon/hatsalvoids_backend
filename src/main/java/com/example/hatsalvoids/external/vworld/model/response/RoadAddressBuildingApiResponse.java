@@ -1,4 +1,4 @@
-package com.example.hatsalvoids.external.model.response;
+package com.example.hatsalvoids.external.vworld.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

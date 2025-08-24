@@ -1,7 +1,8 @@
-package com.example.hatsalvoids.external;
+package com.example.hatsalvoids.external.naver;
 
-import com.example.hatsalvoids.external.model.request.NaverBlogSearchRequest;
-import com.example.hatsalvoids.external.model.response.NaverBlogSearchResponse;
+import com.example.hatsalvoids.external.ExternalApiCaller;
+import com.example.hatsalvoids.external.naver.model.request.NaverBlogSearchRequest;
+import com.example.hatsalvoids.external.naver.model.response.NaverBlogSearchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;

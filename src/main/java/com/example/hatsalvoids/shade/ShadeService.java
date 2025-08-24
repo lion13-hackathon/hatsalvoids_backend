@@ -1,9 +1,9 @@
 package com.example.hatsalvoids.shade;
 
 
-import com.example.hatsalvoids.external.VWorldApiCaller;
-import com.example.hatsalvoids.external.model.response.GISBuildingWFSApiResponse;
-import com.example.hatsalvoids.external.model.response.RoadAddressBuildingApiResponse;
+import com.example.hatsalvoids.external.vworld.VWorldApiCaller;
+import com.example.hatsalvoids.external.vworld.model.response.GISBuildingWFSApiResponse;
+import com.example.hatsalvoids.external.vworld.model.response.RoadAddressBuildingApiResponse;
 import com.example.hatsalvoids.global.GlobalUtils;
 import com.example.hatsalvoids.shade.model.FetchShadeResponse;
 import com.example.hatsalvoids.shade.model.ShadeGeometryResult;

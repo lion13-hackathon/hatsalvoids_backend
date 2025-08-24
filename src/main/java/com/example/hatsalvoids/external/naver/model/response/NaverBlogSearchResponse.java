@@ -1,4 +1,4 @@
-package com.example.hatsalvoids.external.model.response;
+package com.example.hatsalvoids.external.naver.model.response;
 
 
 import lombok.Getter;

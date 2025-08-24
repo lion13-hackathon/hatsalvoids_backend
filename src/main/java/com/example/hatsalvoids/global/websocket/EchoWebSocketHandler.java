@@ -3,7 +3,7 @@ package com.example.hatsalvoids.global.websocket;
 import com.example.hatsalvoids.building.BuildingService;
 import com.example.hatsalvoids.building.model.BuildingSpecificAndSummaryRequest;
 import com.example.hatsalvoids.building.model.BuildingSpecificAndSummaryResponse;
-import com.example.hatsalvoids.external.model.response.BuildingSpecificsByKeywordApiResponse;
+import com.example.hatsalvoids.external.kakao.model.response.BuildingSpecificsByKeywordApiResponse;
 import com.example.hatsalvoids.global.utils.GlobalLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

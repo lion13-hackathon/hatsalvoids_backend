@@ -1,4 +1,4 @@
-package com.example.hatsalvoids.external.model.request;
+package com.example.hatsalvoids.external.vworld.model.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Max;
