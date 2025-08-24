@@ -5,6 +5,7 @@ import com.example.hatsalvoids.external.vworld.VWorldApiCaller;
 import com.example.hatsalvoids.external.vworld.model.response.GISBuildingWFSApiResponse;
 import com.example.hatsalvoids.external.vworld.model.response.RoadAddressBuildingApiResponse;
 import com.example.hatsalvoids.global.GlobalUtils;
+import com.example.hatsalvoids.global.utils.GlobalLogger;
 import com.example.hatsalvoids.shade.model.FetchShadeResponse;
 import com.example.hatsalvoids.shade.model.ShadeGeometryResult;
 import lombok.RequiredArgsConstructor;
@@ -228,6 +229,7 @@ public class ShadeService {
         double altitude = solar[0];
         double azimuth = solar[1];
         if (altitude <= 0.0) {
+            GlobalLogger.info("태양 고도가 0 이하입니다. 그림자를 계산할 수 없습니다.");
             return new ShadeGeometryResult(rings, List.of());
         }
         double[] offset = computeShadeOffset(heightM, altitude, azimuth, 1.0, 10000.0);
