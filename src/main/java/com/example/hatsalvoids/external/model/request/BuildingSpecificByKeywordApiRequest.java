@@ -1,4 +1,4 @@
-package com.example.hatsalvoids.building.model;
+package com.example.hatsalvoids.external.model.request;
 
 
 import lombok.Getter;
@@ -28,7 +28,7 @@ public class BuildingSpecificByKeywordApiRequest {
                 "x", x,
                 "y", y,
                 "radius", radius,
-                "keyword", keyword
+                "query", keyword
         );
     }
 }

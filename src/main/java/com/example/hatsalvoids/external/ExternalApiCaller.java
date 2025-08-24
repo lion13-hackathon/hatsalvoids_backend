@@ -41,7 +41,53 @@ public class ExternalApiCaller {
         }
     }
 
+    public String get(String url){
+        GlobalLogger.info("ExternalApiCaller", "GET Request to URL: " + url);
+        return execute(()-> restTemplate.getForObject(url, String.class));
+    }
     public <R> R get(String url, Map<String, String> headers, Map<String, String> queryParams, ParameterizedTypeReference<R> responseType) {
+        return execute(() -> {
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
+
+            if (queryParams != null) {
+                queryParams.forEach((key, value) -> {
+                    String encodedValue;
+                    try {
+                        encodedValue = URLEncoder.encode(value, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        throw new RuntimeException(e);
+                    }
+                    builder.queryParam(key, encodedValue);
+                });
+            }
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            if (headers != null) {
+                headers.forEach(httpHeaders::set);
+            }
+
+            HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
+
+            URI finalUri = builder.build(true).toUri();
+
+            GlobalLogger.info("ExternalApiCaller", "GET Request to URL: " + finalUri);
+            GlobalLogger.info("Headers: " + headers);
+            GlobalLogger.info("Query Params: " + queryParams);  // raw 로그
+
+            ResponseEntity<R> response = restTemplate.exchange(
+                    finalUri,
+                    HttpMethod.GET,
+                    entity,
+                    responseType
+            );
+
+            GlobalLogger.info("Response: " + response.getBody());
+
+            return response.getBody();
+        });
+    }
+
+    public <R> R getVworldRegacy(String url, Map<String, String> headers, Map<String, String> queryParams, ParameterizedTypeReference<R> responseType) {
         return execute(() -> {
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
 

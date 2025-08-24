@@ -19,6 +19,10 @@ configurations {
     }
 }
 
+ext {
+    springAiVersion = '1.0.0' // 적절한 최신 버전으로 교체
+}
+
 repositories {
     mavenCentral()
 }
@@ -26,12 +30,12 @@ repositories {
 dependencies {
 //    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.locationtech.proj4j:proj4j:1.2.2'
     implementation 'org.locationtech.proj4j:proj4j-epsg:1.2.2'
     implementation 'org.locationtech.jts:jts-core:1.20.0'
     implementation 'net.e175.klaus:solarpositioning:0.0.9'
-//    implementation 'net.e175.klaus:solarpositioning:2.0.5'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -41,6 +45,13 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // OpenAI
+    implementation("org.springframework.ai:spring-ai-openai-spring-boot-starter:1.0.0-M6")
+    implementation("org.springframework.ai:spring-ai-core:1.0.0-M6")
+
+    // Crawl
+    implementation 'org.jsoup:jsoup:1.21.1'
 }
 
 tasks.named('test') {

@@ -1,7 +1,7 @@
 package com.example.hatsalvoids.external;
 
 
-import com.example.hatsalvoids.external.model.request.GISBuildingWFSRequest;
+import com.example.hatsalvoids.external.model.request.GISBuildingWFSApiRequest;
 import com.example.hatsalvoids.external.model.request.RoadAddressBuildingApiRequest;
 import com.example.hatsalvoids.external.model.response.GISBuildingWFSApiResponse;
 import com.example.hatsalvoids.external.model.response.RoadAddressBuildingApiResponse;
@@ -53,7 +53,7 @@ public class VWorldApiCaller {
         RoadAddressBuildingApiRequest request =
                 RoadAddressBuildingApiRequest.of(page, size, geometryFilter, apiKey, domain);
 
-        return externalApiCaller.get(
+        return externalApiCaller.getVworldRegacy(
                 url,
                 null,
                 request.toQueryParams(),
@@ -65,10 +65,10 @@ public class VWorldApiCaller {
     public GISBuildingWFSApiResponse getGISBuildingWFS(String pnu) {
         String url = "https://api.vworld.kr/ned/wfs/getBldgisSpceWFS";
 
-        GISBuildingWFSRequest request =
-                GISBuildingWFSRequest.of(apiKey, domain, pnu, 1);
+        GISBuildingWFSApiRequest request =
+                GISBuildingWFSApiRequest.of(apiKey, domain, pnu, 1);
 
-        return externalApiCaller.get(
+        return externalApiCaller.getVworldRegacy(
                 url,
                 null,
                 request.toQueryParams(),
