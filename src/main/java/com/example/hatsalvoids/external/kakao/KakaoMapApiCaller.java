@@ -1,8 +1,9 @@
-package com.example.hatsalvoids.external;
+package com.example.hatsalvoids.external.kakao;
 
 
-import com.example.hatsalvoids.external.model.request.BuildingSpecificByKeywordApiRequest;
-import com.example.hatsalvoids.external.model.response.BuildingSpecificsByKeywordApiResponse;
+import com.example.hatsalvoids.external.ExternalApiCaller;
+import com.example.hatsalvoids.external.kakao.model.request.BuildingSpecificByKeywordApiRequest;
+import com.example.hatsalvoids.external.kakao.model.response.BuildingSpecificsByKeywordApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;

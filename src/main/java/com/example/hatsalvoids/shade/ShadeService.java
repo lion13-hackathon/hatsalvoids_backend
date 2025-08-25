@@ -1,10 +1,12 @@
 package com.example.hatsalvoids.shade;
 
 
-import com.example.hatsalvoids.external.VWorldApiCaller;
-import com.example.hatsalvoids.external.model.response.GISBuildingWFSApiResponse;
-import com.example.hatsalvoids.external.model.response.RoadAddressBuildingApiResponse;
+import com.example.hatsalvoids.external.vworld.VWorldApiCaller;
+import com.example.hatsalvoids.external.vworld.model.response.GISBuildingWFSApiResponse;
+import com.example.hatsalvoids.external.vworld.model.response.RoadAddressBuildingApiResponse;
 import com.example.hatsalvoids.global.GlobalUtils;
+import com.example.hatsalvoids.shade.common.ShadeErrorCode;
+import com.example.hatsalvoids.shade.common.ShadeException;
 import com.example.hatsalvoids.shade.model.FetchShadeResponse;
 import com.example.hatsalvoids.shade.model.ShadeGeometryResult;
 import lombok.RequiredArgsConstructor;
@@ -221,14 +223,14 @@ public class ShadeService {
 
     private ShadeGeometryResult computeShadeGeometryEpsg5186(List<List<double[]>> rings, double heightM, ZonedDateTime when, String zoneId) {
         if (rings.isEmpty()) {
-            throw new IllegalArgumentException("유효한 LinearRing 좌표를 찾지 못했습니다.");
+            throw new ShadeException(ShadeErrorCode.POINT_NOT_FOUND);
         }
         double[] centroid = computeCentroidXY(rings.get(0));
         double[] solar = getSolarAnglesForEpsg5186Point(centroid[0], centroid[1], when, zoneId);
         double altitude = solar[0];
         double azimuth = solar[1];
         if (altitude <= 0.0) {
-            return new ShadeGeometryResult(rings, List.of());
+            throw new ShadeException(ShadeErrorCode.SOLAR_IS_UNDER);
         }
         double[] offset = computeShadeOffset(heightM, altitude, azimuth, 1.0, 10000.0);
         double dx = offset[0];

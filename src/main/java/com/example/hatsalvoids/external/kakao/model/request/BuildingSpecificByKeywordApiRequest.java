@@ -1,4 +1,4 @@
-package com.example.hatsalvoids.external.model.request;
+package com.example.hatsalvoids.external.kakao.model.request;
 
 
 import lombok.Getter;

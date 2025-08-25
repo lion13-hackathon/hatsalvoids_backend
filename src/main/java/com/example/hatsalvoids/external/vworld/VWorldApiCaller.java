@@ -1,10 +1,11 @@
-package com.example.hatsalvoids.external;
+package com.example.hatsalvoids.external.vworld;
 
 
-import com.example.hatsalvoids.external.model.request.GISBuildingWFSApiRequest;
-import com.example.hatsalvoids.external.model.request.RoadAddressBuildingApiRequest;
-import com.example.hatsalvoids.external.model.response.GISBuildingWFSApiResponse;
-import com.example.hatsalvoids.external.model.response.RoadAddressBuildingApiResponse;
+import com.example.hatsalvoids.external.ExternalApiCaller;
+import com.example.hatsalvoids.external.vworld.model.request.GISBuildingWFSApiRequest;
+import com.example.hatsalvoids.external.vworld.model.request.RoadAddressBuildingApiRequest;
+import com.example.hatsalvoids.external.vworld.model.response.GISBuildingWFSApiResponse;
+import com.example.hatsalvoids.external.vworld.model.response.RoadAddressBuildingApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;

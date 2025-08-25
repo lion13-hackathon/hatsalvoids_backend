@@ -1,11 +1,11 @@
 package com.example.hatsalvoids.building;
 
 
-import com.example.hatsalvoids.external.NaverApiCaller;
-import com.example.hatsalvoids.external.model.response.BuildingSpecificsByKeywordApiResponse;
-import com.example.hatsalvoids.external.KakaoMapApiCaller;
-import com.example.hatsalvoids.external.OpenAiService;
-import com.example.hatsalvoids.external.model.response.NaverBlogSearchResponse;
+import com.example.hatsalvoids.external.naver.NaverApiCaller;
+import com.example.hatsalvoids.external.kakao.model.response.BuildingSpecificsByKeywordApiResponse;
+import com.example.hatsalvoids.external.kakao.KakaoMapApiCaller;
+import com.example.hatsalvoids.external.openai.OpenAiService;
+import com.example.hatsalvoids.external.naver.model.response.NaverBlogSearchResponse;
 import com.example.hatsalvoids.global.utils.GlobalLogger;
 import com.example.hatsalvoids.global.utils.NaverBlogCrawler;
 import lombok.RequiredArgsConstructor;
